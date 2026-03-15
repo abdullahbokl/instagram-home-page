@@ -25,5 +25,6 @@ void showFeedSnackbar(
       elevation: 0,
       content: Text(message, style: AppTextStyles.snackbar(colors)),
     ),
+    snackBarAnimationStyle: AnimationStyle.noAnimation,
   );
 }
