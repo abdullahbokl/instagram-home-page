@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import '../../domain/models/media_item.dart';
 
-class FeedPostViewData {
+class FeedPostViewData extends Equatable {
   const FeedPostViewData({
     required this.id,
     required this.username,
@@ -30,4 +31,21 @@ class FeedPostViewData {
   final List<MediaItem> mediaItems;
   final bool isLiked;
   final bool isSaved;
+
+  @override
+  List<Object?> get props => [
+    id,
+    username,
+    userAvatarUrl,
+    isVerified,
+    location,
+    likedByUsername,
+    likedByAvatarUrl,
+    likeCountLabel,
+    caption,
+    dateLabel,
+    mediaItems,
+    isLiked,
+    isSaved,
+  ];
 }
