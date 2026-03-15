@@ -1,34 +1,102 @@
-# Instagram Feed Replica
+# Instagram Home Feed Replica
 
-A polished Flutter recreation of the Instagram home feed with Bloc-driven data flow, shimmer loading states, infinite scrolling, cached remote imagery, and a custom pinch-to-zoom overlay that lifts media above the feed before animating it back into place.
+A polished Flutter recreation of the Instagram home feed focused on visual fidelity, smooth scrolling, reusable UI primitives, and testable architecture.
+
+## Preview
+
+- App video: [Watch demo](https://drive.google.com/file/d/1ZFUw5FmN1x_VbbW1p5fcxTXPyIlzwoMb/view?usp=sharing)
+
+![Instagram Home Feed Replica](screenshots/home-feed.jpg)
+
+## What This Project Includes
+
+- Instagram-style home feed with top bar, stories tray, post feed, and bottom navigation
+- Shimmer-first loading flow with a mocked `1.5s` repository delay
+- Infinite scrolling with lazy pagination
+- Multi-image carousel posts with synced page indicators
+- Pinch-to-zoom media interaction with overlay presentation
+- Local Like/Save toggle interactions
+- Cached remote images with graceful fallback UI
+- Light and dark theme support
+- Widget, bloc, unit, and integration/performance tests
+
+## Project Structure
+
+The codebase follows a feature-first structure with shared UI building blocks:
+
+```text
+lib/
+├── app/        # App bootstrap, dependency wiring, app-level shell setup
+├── core/       # Theme, constants, low-level shared widgets/utilities
+├── shared/     # Reusable design-system widgets and tokens
+└── features/
+    └── feed/
+        ├── data/         # Repository + mock service
+        ├── domain/       # Models, failures, use cases
+        └── presentation/ # Bloc, mappers, screens, widgets
+```
 
 ## State Management
 
-This project uses `flutter_bloc` for feed state because it keeps asynchronous loading, pagination, and local post mutations explicit and interview-friendly. The Bloc owns repository fetches and like/save state transitions, while high-frequency visual interaction state such as carousel position and pinch-to-zoom transforms stays inside widgets for smoother rendering and less unnecessary rebuilding.
+This project uses `flutter_bloc`.
 
-## Features
+`Bloc` was chosen because it keeps asynchronous flows explicit and easy to reason about: initial loading, pagination, failure handling, and Like/Save mutations all move through clear events and state transitions. At the same time, very high-frequency visual state such as carousel page position and pinch-to-zoom progress stays local to widgets, which helps reduce unnecessary rebuilds and keeps scrolling and gestures smoother.
 
-- Clean architecture split across `core/` and `features/feed/` with separate models, repositories, services, Bloc, and widgets.
-- Mock `PostRepository` with a forced `1.5s` latency to demonstrate a realistic shimmer-first loading experience.
-- Infinite scroll that requests the next page when the list builder reaches two posts from the end.
-- Cached public network images using `cached_network_image`, including graceful fallback UI for failed image requests.
-- Modern Instagram-inspired top bar, stories tray, carousel posts, persistent like/save toggles, and custom snackbars for unimplemented actions.
-- System light and dark theme support using extracted Figma spacing/tokens for the light theme and an inferred Instagram-style dark palette.
+## Tech Stack
 
-## Run
+- `flutter_bloc` for state management
+- `equatable` for predictable state comparisons
+- `cached_network_image` for network image caching
+- `shimmer` for loading skeletons
+- `flutter_svg` for vector asset rendering
+- `font_awesome_flutter` for icon support
+
+## Running the App
+
+### Prerequisites
+
+- Flutter SDK installed
+- An emulator, simulator, or physical device connected
+
+### Install dependencies
 
 ```bash
 flutter pub get
+```
+
+### Run in debug mode
+
+```bash
 flutter run
 ```
 
-## Test
+### Run in profile mode
+
+```bash
+flutter run --profile
+```
+
+## Testing
+
+### Unit and widget tests
 
 ```bash
 flutter test
 ```
 
-## Notes
+### Integration/performance test
 
-- Raster post media is intentionally not bundled in `pubspec.yaml`; the feed uses public URLs so caching behavior can be demonstrated realistically.
-- Small vector assets such as the Instagram wordmark and verified badge are included under `assets/vectors/`.
+```bash
+flutter drive --profile --no-dds --driver=test_driver/integration_test.dart --target=integration_test/feed_performance_test.dart -d <device-id>
+```
+
+Notes:
+
+- `--no-dds` is used because the performance suite collects timeline data.
+- Replace `<device-id>` with your emulator or device id from `flutter devices`.
+
+## Assets
+
+- Vector assets are stored in `assets/vectors/`
+- README preview image is stored in `screenshots/home-feed.jpg`
+- Post and avatar media are loaded from public network URLs rather than bundled raster assets
