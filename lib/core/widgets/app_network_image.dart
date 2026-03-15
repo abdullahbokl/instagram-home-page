@@ -34,19 +34,21 @@ class AppNetworkImage extends StatelessWidget {
       return errorWidget ?? _NetworkImageError(width: width, height: height);
     }
 
-    Widget child = CachedNetworkImage(
-      imageUrl: imageUrl,
-      width: width,
-      height: height,
-      fit: fit,
-      alignment: alignment,
-      fadeInDuration: const Duration(milliseconds: 180),
-      fadeOutDuration: const Duration(milliseconds: 120),
-      placeholderFadeInDuration: const Duration(milliseconds: 120),
-      placeholder: (context, url) =>
-          placeholder ?? ShimmerBox(width: width, height: height),
-      errorWidget: (context, url, error) =>
-          errorWidget ?? _NetworkImageError(width: width, height: height),
+    Widget child = RepaintBoundary(
+      child: CachedNetworkImage(
+        imageUrl: imageUrl,
+        width: width,
+        height: height,
+        fit: fit,
+        alignment: alignment,
+        fadeInDuration: Duration.zero,
+        fadeOutDuration: Duration.zero,
+        placeholderFadeInDuration: Duration.zero,
+        placeholder: (context, url) =>
+            placeholder ?? ShimmerBox(width: width, height: height),
+        errorWidget: (context, url, error) =>
+            errorWidget ?? _NetworkImageError(width: width, height: height),
+      ),
     );
 
     if (isCircular) {
@@ -55,7 +57,7 @@ class AppNetworkImage extends StatelessWidget {
       child = ClipRRect(borderRadius: borderRadius!, child: child);
     }
 
-    return child;
+    return RepaintBoundary(child: child);
   }
 }
 

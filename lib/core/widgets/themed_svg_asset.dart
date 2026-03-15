@@ -17,38 +17,11 @@ class ThemedSvgAsset extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-      future: DefaultAssetBundle.of(context).loadString(assetPath),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return SizedBox(width: width, height: height);
-        }
-
-        final svg = snapshot.data!
-            .replaceAll('var(--fill-0, #262626)', _hexColor(color))
-            .replaceAll('#262626', _hexColor(color));
-
-        return SvgPicture.string(svg, width: width, height: height);
-      },
+    return SvgPicture.asset(
+      assetPath,
+      width: width,
+      height: height,
+      colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
     );
-  }
-
-  String _hexColor(Color color) {
-    final red = (color.r * 255)
-        .round()
-        .clamp(0, 255)
-        .toRadixString(16)
-        .padLeft(2, '0');
-    final green = (color.g * 255)
-        .round()
-        .clamp(0, 255)
-        .toRadixString(16)
-        .padLeft(2, '0');
-    final blue = (color.b * 255)
-        .round()
-        .clamp(0, 255)
-        .toRadixString(16)
-        .padLeft(2, '0');
-    return '#$red$green$blue';
   }
 }

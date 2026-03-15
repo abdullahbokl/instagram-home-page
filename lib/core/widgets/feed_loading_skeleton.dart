@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../constants/app_dimensions.dart';
 import '../theme/app_theme.dart';
+import '../../shared/design/app_widget_keys.dart';
 import '../../shared/presentation/widgets/app_shimmer_scaffold.dart';
 import 'shimmer_box.dart';
 
@@ -20,6 +22,7 @@ class FeedLoadingSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.appColors;
     return AppShimmerScaffold(
+      key: AppWidgetKeys.shimmerScaffold,
       slivers: [
         SliverToBoxAdapter(
           child: Container(
@@ -99,9 +102,21 @@ class PaginationPostSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(bottom: 24),
-      child: _PostSkeleton(compactHeader: true),
+    final baseColor = Theme.of(context).brightness == Brightness.dark
+        ? const Color(0xFF1E1E1E)
+        : const Color(0xFFE8E8E8);
+    final highlightColor = Theme.of(context).brightness == Brightness.dark
+        ? const Color(0xFF2A2A2A)
+        : const Color(0xFFF4F4F4);
+
+    return Shimmer.fromColors(
+      baseColor: baseColor,
+      highlightColor: highlightColor,
+      child: const Padding(
+        key: AppWidgetKeys.paginationSkeleton,
+        padding: EdgeInsets.only(bottom: 24),
+        child: _PostSkeleton(compactHeader: true),
+      ),
     );
   }
 }
