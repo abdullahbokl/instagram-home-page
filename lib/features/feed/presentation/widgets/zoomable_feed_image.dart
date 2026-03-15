@@ -70,9 +70,6 @@ class _ZoomableFeedImageState extends State<ZoomableFeedImage>
     _scale = details.scale.clamp(1.0, 3.0);
     _translation = details.focalPoint - _baseFocalPoint;
     _overlayEntry?.markNeedsBuild();
-    if (mounted) {
-      setState(() {});
-    }
   }
 
   void _handleScaleEnd(ScaleEndDetails details) {
@@ -103,9 +100,6 @@ class _ZoomableFeedImageState extends State<ZoomableFeedImage>
     _scale = _scaleAnimation!.value;
     _translation = _offsetAnimation!.value;
     _overlayEntry?.markNeedsBuild();
-    if (mounted) {
-      setState(() {});
-    }
   }
 
   void _handleAnimationStatus(AnimationStatus status) {
@@ -152,28 +146,25 @@ class _ZoomableFeedImageState extends State<ZoomableFeedImage>
         .toDouble();
 
     return IgnorePointer(
-      child: Material(
-        color: Colors.transparent,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            ColoredBox(color: Colors.black.withValues(alpha: barrierOpacity)),
-            Positioned(
-              left: rect.left,
-              top: rect.top,
-              width: rect.width,
-              height: rect.height,
-              child: Transform.translate(
-                offset: _translation,
-                child: Transform.scale(
-                  scale: overlayScale,
-                  alignment: Alignment.center,
-                  child: _buildImage(),
-                ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          ColoredBox(color: Colors.black.withValues(alpha: barrierOpacity)),
+          Positioned(
+            left: rect.left,
+            top: rect.top,
+            width: rect.width,
+            height: rect.height,
+            child: Transform.translate(
+              offset: _translation,
+              child: Transform.scale(
+                scale: overlayScale,
+                alignment: Alignment.center,
+                child: _buildImage(),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -217,7 +208,7 @@ class _ZoomableFeedImageState extends State<ZoomableFeedImage>
       onScaleUpdate: _handleScaleUpdate,
       onScaleEnd: _handleScaleEnd,
       behavior: HitTestBehavior.opaque,
-      child: Opacity(opacity: _isZooming ? 0 : 1, child: _buildImage()),
+      child: _isZooming ? const SizedBox.expand() : _buildImage(),
     );
   }
 }

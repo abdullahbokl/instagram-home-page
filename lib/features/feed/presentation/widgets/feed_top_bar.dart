@@ -5,6 +5,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/feed_snackbar.dart';
 import '../../../../shared/design/app_assets.dart';
 import '../../../../shared/design/app_spacing.dart';
+import '../../../../shared/design/app_widget_keys.dart';
 import '../../../../shared/presentation/widgets/app_icon_action.dart';
 import '../../../../shared/presentation/widgets/app_svg_icon.dart';
 import '../../../../shared/presentation/widgets/app_top_bar.dart';
@@ -56,6 +57,7 @@ class FeedTopBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.appColors;
     return AppTopBar(
+      key: AppWidgetKeys.topBar,
       leading: AppIconAction(
         semanticLabel: 'Open camera',
         onPressed: () => showFeedSnackbar(

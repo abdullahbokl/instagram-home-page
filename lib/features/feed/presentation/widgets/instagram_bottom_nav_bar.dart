@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/feed_snackbar.dart';
 import '../../../../shared/design/app_assets.dart';
+import '../../../../shared/design/app_widget_keys.dart';
 import '../../../../shared/presentation/widgets/app_avatar.dart';
 import '../../../../shared/presentation/widgets/app_bottom_nav_bar.dart';
 import '../../../../shared/presentation/widgets/app_svg_icon.dart';
@@ -17,6 +18,7 @@ class InstagramBottomNavBar extends StatelessWidget {
     final colors = context.appColors;
 
     return AppBottomNavBar(
+      key: AppWidgetKeys.bottomNav,
       backgroundColor: colors.surface,
       borderColor: colors.subtleSeparator,
       items: [
@@ -102,14 +104,11 @@ class _BottomNavSvgItem extends StatelessWidget {
     return IconButton(
       onPressed: onPressed,
       splashRadius: 22,
-      icon: Opacity(
-        opacity: isSelected ? 1 : 0.92,
-        child: AppSvgIcon(
-          assetPath: assetPath,
-          color: colors.primaryText,
-          width: 24,
-          height: 24,
-        ),
+      icon: AppSvgIcon(
+        assetPath: assetPath,
+        color: colors.primaryText.withValues(alpha: isSelected ? 1.0 : 0.92),
+        width: 24,
+        height: 24,
       ),
       isSelected: isSelected,
       tooltip: semanticLabel,

@@ -69,14 +69,11 @@ class PostActions extends StatelessWidget {
           AppIconAction(
             semanticLabel: 'Save post',
             onPressed: onSavePressed,
-            child: Opacity(
-              opacity: isSaved ? 1 : 0.92,
-              child: AppSvgIcon(
-                assetPath: AppAssets.save,
-                color: colors.primaryText,
-                width: 20,
-                height: 22,
-              ),
+            child: AppSvgIcon(
+              assetPath: AppAssets.save,
+              color: colors.primaryText.withValues(alpha: isSaved ? 1.0 : 0.92),
+              width: 20,
+              height: 22,
             ),
           ),
         ],
